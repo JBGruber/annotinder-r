@@ -4,7 +4,7 @@
 \alias{annotator_client}
 \title{Open the annotator client}
 \usage{
-annotator_client(in_browser = FALSE)
+annotator_client(in_browser = FALSE, host)
 }
 \arguments{
 \item{in_browser}{Can be TRUE if you want to force opening in the default webbrowser}

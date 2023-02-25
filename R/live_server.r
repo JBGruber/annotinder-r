@@ -31,7 +31,7 @@
 #' \dontrun{
 #' start_annotator(job_db)
 #' }
-start_annotator <- function(job_db, background=F, browse=T, port=8000) {
+start_annotator <- function(job_db, background=F, browse=T, port=8000, host = "http://localhost:8000") {
   job_db = normalizePath(job_db)
   if (!file.exists(job_db)) stop(sprintf('The database file does not exist (%s)', job_db))
 
@@ -46,7 +46,7 @@ start_annotator <- function(job_db, background=F, browse=T, port=8000) {
   }
 
   server_script = create_plumber_server_script(job_db)
-  if (browse) annotator_client(in_browser = !background) ## if not background job, rstudio can't serve it
+  if (browse) annotator_client(in_browser = !background, host) ## if not background job, rstudio can't serve it
 
   if (background) {
     run_as_job(server_script)

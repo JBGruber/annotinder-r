@@ -11,19 +11,21 @@
 #'
 #' @examples
 #' annotator_client()
-annotator_client <- function(in_browser=FALSE) {
+annotator_client <- function(in_browser=FALSE, host) {
   react_build = system.file("annotinder_client", package="annotinder", mustWork=T)
+
+  tf = tempdir()
+  file.copy(react_build, tf, recursive = T, overwrite = T)
+  browser_url <- file.path(tf, 'annotinder_client/build/index.html')
+  js <- readLines(file.path(tf, 'annotinder_client/build/static/js/main.8452cd4e.js'), warn = FALSE)
+  js <- gsub("http://localhost:8000", host, js, fixed = TRUE)
+  writeLines(js, file.path(tf, 'annotinder_client/build/static/js/main.8452cd4e.js'))
 
   viewer = getOption("viewer")
 
   if (is.null(viewer) || in_browser) {
-    browser_url = file.path(react_build, 'build/index.html')
     utils::browseURL(browser_url)
   } else {
-    ## RStudio can host it from an R temp file (see ?rstudioapi::viewer)
-    tf = tempdir()
-    url = file.path(tf, 'annotinder_client/build/index.html')
-    if (!file.exists(url)) file.copy(react_build, tf, recursive = T, overwrite = T)
-    viewer(url)
+    viewer(browser_url)
   }
 }
