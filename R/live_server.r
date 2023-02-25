@@ -104,7 +104,7 @@ run_as_job <- function(server_script) {
 run_in_current_session <- function(db_file, server_script) {
   tryCatch({
     pr = plumber::pr(server_script)
-    plumber::pr_run(pr, docs=F, port=8000)
+    plumber::pr_run(pr, host = "0.0.0.0", docs=F, port=8000)
   }, finally = "silence of the servers")
 }
 
@@ -120,7 +120,7 @@ create_plumber_server_script <- function(db_file) {
 
 create_plumber_file <- function(server_script) {
   start_server_file = tempfile(fileext = '.r')
-  start_server_script = sprintf("library(annotinder)\ntryCatch(plumber::pr_run(plumber::pr('%s'), docs=F, port=8000), error=function(e) NULL)", server_script)
+  start_server_script = sprintf("library(annotinder)\ntryCatch(plumber::pr_run(plumber::pr('%s'), host = '0.0.0.0', docs=F, port=8000), error=function(e) NULL)", server_script)
   writeLines(start_server_script, start_server_file)
   start_server_file
 }
