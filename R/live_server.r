@@ -41,7 +41,7 @@ start_annotator <- function(job_db, background=F, browse=T, port=8000, host = "h
   if (server_running) {
     ## if server already running, just replace the db file and restart client
     httr::POST('localhost:8000/db', body=jsonlite::toJSON(list(db_file=job_db), auto_unbox = T))
-    if (browse) annotator_client(in_browser = !background) ## if not background job, rstudio can't serve it
+    if (browse) annotator_client(in_browser = !background, host) ## if not background job, rstudio can't serve it
     return(invisible(job_db))
   }
 
